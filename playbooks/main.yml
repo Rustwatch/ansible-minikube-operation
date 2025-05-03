@@ -1,0 +1,8 @@
+---
+- name: "Execute all playbooks at once"
+  hosts: localhost
+  tasks:
+  - ansible.builtin.include_role: 
+      name: secure_os
+  - ansible.builtin.include_role: 
+      name: minikube_config

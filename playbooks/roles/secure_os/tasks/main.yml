@@ -1,0 +1,53 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for secure_os
+- name: "Install all needed packages for this role"
+  community.general.zypper:
+    name: 
+    - firewalld
+    state: present
+  become: true
+
+- name: "Check if sshd_config.d exists if not create it"
+  ansible.builtin.file:
+    path: /etc/ssh/sshd_config.d
+    state: "directory"
+    owner: root
+    group: root
+  become: true
+
+- name: "Create sshd file to secure logon"
+  ansible.builtin.template:
+    src: 00-sshd_secure.conf.j2
+    dest: /etc/ssh/sshd_config.d/00-sshd_secure.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+  - Daemon-Reload Systemd
+  become: true
+
+- name: "Start Service firewalld and enable it for new reboots"
+  ansible.builtin.systemd_service:
+    name: firewalld
+    state: started
+    enabled: true
+  become: true
+  
+- name: "Append bew SSH Port to firewall"
+  ansible.posix.firewalld:
+    port: "{{ secure_os.ssh.port }}/tcp"
+    state: enabled
+  become: true
+
+- name: "Remove service SSH to firewall"
+  ansible.posix.firewalld:
+    service: ssh
+    state: disabled
+    immediate: true
+  become: true
+
+- name: "Reload systemd to enable new ssh port"
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  become: true
