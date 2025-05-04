@@ -1,0 +1,3 @@
+---
+ansible_ssh_private_key_file: ./keys/id_rsa
+ansible_user: ansible_service

@@ -1,0 +1,11 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for minikube_config
+minikube_config:
+  user:
+    name: minikube_service
+    uid: 2007
+#    gid: 2007
+  cluster:
+    cpu: 2      #Cores of the CPU used in minikube cluster
+    ram: 8000  #RAM in Megabyte used in minikube cluster

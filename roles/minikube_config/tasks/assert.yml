@@ -1,0 +1,6 @@
+---
+- name: "Check if RAM and CPU are sufficient"
+  assert:
+    that:
+    - ansible_processor_vcpus >= minikube_config.cluster.cpu
+    - ansible_memtotal_mb >= minikube_config.cluster.ram

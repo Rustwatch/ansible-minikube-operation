@@ -1,0 +1,29 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for minikube_config
+- name: "Check executability of this role"
+  include_tasks: assert.yml
+
+- name: "Install Minikube"
+  community.general.zypper:
+    name:
+    - minikube
+    state: present
+  become: true
+
+- name: "Create minikube service user {{ minikube_config.user.name }}"
+  ansible.builtin.user:
+    name: "{{ minikube_config.user.name }}"
+    create_home: true
+    uid: "{{ minikube_config.user.uid }}"
+  become: true
+
+- name: "Copy alias for minikube to be used like kubectl"
+  ansible.builtin.copy:
+    src: ansible_kubectl_aliases.sh
+    dest: /etc/profile.d/ansible_kubectl_aliases.sh
+  become: true
+
+- name: "Create minikube cluster with {{ minikube_config.cluster.ram }} RAM and {{ minikube_config.cluster.cpu }}"
+  ansible.builtin.shell: "minikube start --cpus={{ minikube_config.cluster.cpu }} --memory={{ minikube_config.cluster.ram }} --addons=ingress"
+  become_user: "{{ minikube_config.user.name }}"
