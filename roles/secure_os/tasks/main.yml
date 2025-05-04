@@ -25,6 +25,7 @@
     mode: '0644'
   notify:
   - Daemon-Reload Systemd
+  - Restart sshd
   become: true
 
 - name: "Start Service firewalld and enable it for new reboots"

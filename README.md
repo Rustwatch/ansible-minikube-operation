@@ -4,6 +4,9 @@
 I want to acomplish to create a whole "operations" environment via minikube and ansible in opensuse.
 The only "work" a user that executes that repository has is to read and configurate the wanted variables and vaults.
 
+## Initial Setup
+The 00 intiial setup script should install all necessary files regarding 
+
 ## The ansible playbooks
 ### 1st securing the os
 A secure operating system is the key for a secure environment. A general recommendation of "whats best" is in mho not to 100% possible. 
